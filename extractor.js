@@ -13,7 +13,8 @@ const EXTRACTION_TEMPLATE = `Carefully read the provided HTML and identify all o
    and save the details in a structured format using the output_formatter function. 
    Ensure to capture only those fields explicitly mentioned or implied within the passage. 
    If a property is relevant but not explicitly stated or required by the task parameters, 
-   write "NA" for the answer and the source. Aim for completeness and accuracy in extracting and 
+   write "NA" for the answer and the source. For the source of each answer, ensure that you are taking the verbatim
+   quote in the article. Aim for completeness and accuracy in extracting and 
    documenting the relevant information.`;
 
 function createZodSchema(fields, types, descriptions) {
@@ -73,7 +74,7 @@ async function extractInformationFromHTML(
 
   const key = localStorage.getItem("openaiKey");
   const llm = new ChatOpenAI({
-    modelName: "gpt-3.5-turbo-0125",
+    modelName: "gpt-4-0125-preview",
     temperature: 0,
     openAIApiKey: key,
   });
