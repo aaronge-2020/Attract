@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article Information Extractor</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.0/dist/alpine.min.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
@@ -17,39 +18,78 @@
 
 <body class="bg-gray-100">
     <!-- Navigation bar  -->
-    <nav class="bg-gray-900 shadow-lg">
+    <nav class="bg-gray-900 shadow-lg" x-data="{ open: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
-                    <a href="./" class="text-white font-bold text-xl hover:text-gray-300">Article Information Extractor</a>
+                    <a href="./" class="text-white font-bold text-xl hover:text-gray-300">Artitract</a>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <!-- Navigation Links Example -->
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Github</a>
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Issues</a>
-                        <!-- More navigation items can be added here -->
+                        <!-- Navigation Links for desktop -->
+                        <a href="./"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="https://github.com/aaronge-2020/Artitract"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Github</a>
+                        <a href="https://github.com/aaronge-2020/Artitract/issues"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Issues</a>
                     </div>
                 </div>
-                <!-- Mobile menu button -->
                 <div class="md:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <button @click="open = !open" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                         <span class="sr-only">Open main menu</span>
-                        <!-- Icon for the menu button open -->
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        <!-- Icon for the menu button -->
+                        <svg :class="{'hidden': open, 'block': !open }" class="h-6 w-6"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7" />
                         </svg>
-                        <!-- Icon for the menu button close, hidden by default -->
-                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <svg :class="{'block': open, 'hidden': !open }" class="h-6 w-6"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="md:hidden" x-show="open" @click.away="open = false"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="transform opacity-0 scale-95"
+            x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
+            x-transition:leave-start="transform opacity-100 scale-100"
+            x-transition:leave-end="transform opacity-0 scale-95">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="./"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="https://github.com/aaronge-2020/Artitract"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Github</a>
+                <a href="https://github.com/aaronge-2020/Artitract/issues"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Issues</a>
+            </div>
+        </div>
     </nav>
-    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('navbar');
+
+            btn.addEventListener('click', function () {
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                } else {
+                    menu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
     <div class="flex-grow container mx-auto px-4 py-5">
         <h1 class="text-2xl font-bold text-center my-5">Article Information Extractor</h1>
         <div id="form-container" class="bg-white shadow rounded-lg px-8 pt-6 pb-8 mb-4">
@@ -109,7 +149,7 @@
             <!-- Placeholder for Article -->
             <h1> Article </h1>
             <div id="extracted-article">
-
+                None loaded.
             </div>
 
         </div>
@@ -118,11 +158,12 @@
             <!-- Placeholder for extraction results -->
             <h1> Results </h1>
             <div id="extraction-results">
-
+                None loaded.
             </div>
 
             <div class="flex items-center justify-end">
-                <button id="save-json" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <button id="save-json"
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Save JSON
                 </button>
             </div>
