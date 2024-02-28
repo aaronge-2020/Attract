@@ -1,0 +1,33 @@
+#extracted-article {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333333;
+    max-width: 100%;
+}
+
+#extracted-article h2,
+#extracted-article h3 {
+    color: #0056b3;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-size: large;
+}
+
+#extracted-article p {
+    margin-bottom: 16px;
+    text-align: justify;
+}
+
+#extracted-article a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#extracted-article a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
