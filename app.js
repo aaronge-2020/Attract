@@ -1,7 +1,6 @@
 import { extract } from "https://esm.sh/@extractus/article-extractor";
 import { extractInformationFromHTML } from "./extractor.js";
 
-
 function saveKey() {
   const openaiKey = document.getElementById("openai-key").value;
   if (openaiKey) {
@@ -28,9 +27,9 @@ $(document).ready(function () {
   function addInputField(name = "", input_type = "", description = "") {
     const fieldHtml = $(`
             <div class="flex flex-wrap items-center mb-4 fieldItem">
-                <input type="text" value ='${name}' placeholder="Field name (e.g., Author)" class="field-name shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" style="flex-grow: 1;">
+                <input required type="text" value ='${name}' placeholder="Field name (e.g., Author)" class="field-name shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" style="flex-grow: 1;">
 
-                <select class="field-type shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" style="flex-grow: 1;">
+                <select required class="field-type shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" style="flex-grow: 1;">
                 <option value="" ${
                   input_type === "" ? "selected" : ""
                 }>Select Type</option>
@@ -45,7 +44,7 @@ $(document).ready(function () {
                     }>Boolean</option>
                 </select>
 
-                <input type="text" value ='${description}' placeholder="Description (e.g., Article author)" class="field-description shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" style="flex-grow: 4;">
+                <input required type="text" value ='${description}' placeholder="Description (e.g., Article author)" class="field-description shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" style="flex-grow: 4;">
 
                 <button class="remove-field bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">-</button>
             </div>
@@ -105,6 +104,10 @@ $(document).ready(function () {
   // Handle form submission
   $("#article-form").submit(async function (e) {
     e.preventDefault();
+    $("#extracted-article").html("<p>Loading...</p>");
+
+    $("#extraction-results").html("<p>Loading...</p>");
+
     const articleUrl = $("#article-url").val();
     const fieldsToExtract = $(".field-name")
       .map(function () {
@@ -112,10 +115,11 @@ $(document).ready(function () {
       })
       .get();
 
-    const fieldsTypes = $(".field-type").map(function () {
-      return $(this).val();
-    })
-    .get();
+    const fieldsTypes = $(".field-type")
+      .map(function () {
+        return $(this).val();
+      })
+      .get();
     const fieldsDescriptions = $(".field-description")
       .map(function () {
         return $(this).val();
@@ -132,20 +136,18 @@ $(document).ready(function () {
       "https://api.allorigins.win/get?url=" + encodeURIComponent(articleUrl);
 
     try {
-      $("#result-container").html("<p>Loading...</p>");
-
       const article = await extract(fetchUrl);
 
-      const cleanedHTML = displayArticle(
-        article.content
+      const cleanedHTML = displayArticle(article.content);
+
+      const extractedInformation = await extractInformationFromHTML(
+        cleanedHTML,
+        fieldsToExtract,
+        fieldsTypes,
+        fieldsDescriptions
       );
 
-      const extractedInformation = await extractInformationFromHTML(cleanedHTML, fieldsToExtract, fieldsTypes, fieldsDescriptions);
-
-      debugger;
-      displayResults()
-
-      
+      displayResults(extractedInformation);
     } catch (err) {
       alert("Failed to retrieve the article. Please try again.");
 
@@ -206,22 +208,70 @@ $(document).ready(function () {
     return doc.body.innerHTML;
   }
   // Function to parse and display extracted information along with descriptions
-  function displayArticle(
-    htmlData
-  ) {
+  function displayArticle(htmlData) {
     // Replace multiple line breaks and spaces with a single space
     const cleanedContent = cleanAndTransformHTML(htmlData);
 
-        // Insert the cleaned content into the specified div
+    // Insert the cleaned content into the specified div
     document.getElementById("extracted-article").innerHTML = cleanedContent;
 
     return cleanedContent;
   }
 
   function displayResults(results) {
-    
+    // Get a reference to the container
+    var container = document.getElementById("extraction-results");
 
+    // Clear previous contents (if any)
+    container.innerHTML = "";
 
+    // Specify options for the JSONEditor
+    var options = {
+      mode: "tree", // set to 'code' to allow code editing, 'tree' for visual editor, or 'view' to just view
+      modes: ["code", "form", "text", "tree", "view"], // can be adjusted according to what you want to allow
+      onError: function (err) {
+        alert(err.toString());
+      },
+      onModeChange: function (newMode, oldMode) {
+        console.log("Mode switched from", oldMode, "to", newMode);
+      },
+    };
+
+    // Create the editor
+    var editor = new JSONEditor(container, options);
+
+    // Set JSON data
+    editor.set(results);
+
+    window.editor = editor;
   }
 
+  // If you want to get updated JSON data by the user, you can use editor.get()
+  $("#save-json").click(function () {
+    // If window.editor is not defined, then the editor has not been created
+    if (!window.editor) {
+      alert("Please extract information from an article first.");
+      return;
+    }
+
+    // Retrieve JSON data from the editor
+    var json = editor.get();
+
+    // Serialize JSON data to a string
+    var jsonString = JSON.stringify(json, null, 2); // Pretty print with 2 spaces indentation
+
+    // Create a Blob object representing the JSON data
+    var blob = new Blob([jsonString], { type: "application/json" });
+
+    // Create a URL for the blob object
+    var url = URL.createObjectURL(blob);
+
+    // Create a temporary anchor element and trigger the download
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "extracted-data.json"; // File name for the download
+    document.body.appendChild(a); // Append to the document
+    a.click(); // Trigger the download
+    document.body.removeChild(a); // Clean up
+  });
 });
