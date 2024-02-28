@@ -17,14 +17,39 @@
 
 <body class="bg-gray-100">
     <!-- Navigation bar  -->
-    <nav class="bg-gray-800">
+    <nav class="bg-gray-900 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <a href="./" class="text-white font-semibold text-lg">Article Information Extractor</a>
-                <!-- Additional navigation items can be added here -->
+                <div class="flex-shrink-0">
+                    <a href="./" class="text-white font-bold text-xl hover:text-gray-300">Article Information Extractor</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <!-- Navigation Links Example -->
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Github</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Issues</a>
+                        <!-- More navigation items can be added here -->
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Icon for the menu button open -->
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                        <!-- Icon for the menu button close, hidden by default -->
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
+    
     <div class="flex-grow container mx-auto px-4 py-5">
         <h1 class="text-2xl font-bold text-center my-5">Article Information Extractor</h1>
         <div id="form-container" class="bg-white shadow rounded-lg px-8 pt-6 pb-8 mb-4">
