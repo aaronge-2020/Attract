@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Information Extractor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-5">
+        <h1 class="text-2xl font-bold text-center my-5">Article Information Extractor</h1>
+        <div id="form-container" class="bg-white shadow rounded-lg px-8 pt-6 pb-8 mb-4">
+            <form id="article-form" novalidate>
+                <div class="mb-4">
+                    <label for="article-url" class="block text-gray-700 text-sm font-bold mb-2">
+                        Article URL
+                    </label>
+                    <input type="url" id="article-url" name="article-url" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="https://example.com/article">
+                </div>
+                <div class="mb-4" id="fields-container">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Information to Extract
+                    </label>
+                    <!-- Placeholder for dynamically added fields -->
+                </div>
+                <div class="mb-4">
+                    <label for="template-upload" class="block text-gray-700 text-sm font-bold mb-2">
+                        Upload Template
+                    </label>
+                    <input type="file" id="template-upload" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="button" id="add-field" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Add Field
+                    </button>
+                    <div class="flex gap-2">
+                        <button type="button" id="export-template" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Export Fields
+                        </button>
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Extract
+                    </button>
+                    
+                </div>
+                </div>
+            </form>
+        </div>
+        <div id="result-container" class="bg-white shadow rounded-lg px-8 pt-6 pb-8 mb-4">
+            <!-- Placeholder for extraction results -->
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
